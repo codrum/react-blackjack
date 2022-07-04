@@ -33,6 +33,7 @@ export const makeDeck = (): Deck => {
 
 export const makeHand = (hand: CardID[] = []): Hand => {
     // let hand: CardID[] = []
+    // console.log('hello')
     return {
         hand,
         hit(deck) {
