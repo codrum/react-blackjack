@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { CardID } from '../types/Card'
 import { Card } from './Card'
 
@@ -9,6 +9,7 @@ export type Hand = { hand: CardID[], hit: (deck: Deck) => void }
 
 export const makeDeck = (): Deck => {
     const cards: CardID[] = ["4D", "2H", "8C", "QS", "2S", "5H", "AH"]
+
     const deck: Deck = {
         draw() {
             let topCard = cards.shift()
@@ -28,27 +29,26 @@ export const makeDeck = (): Deck => {
             return hands
         }
     }
+
     return deck
 }
 
-export const makeHand = (hand: CardID[] = []): Hand => {
-    // let hand: CardID[] = []
+export const makeHand = (): Hand => {
+    let hand: CardID[] = []
     return {
         hand,
         hit(deck) {
-            // hand = [...hand, deck.draw()]
-            // hand.push(deck.draw())
-            return makeHand([...hand, deck.draw()])
+            hand.push(deck.draw())
         }
     }
 }
 
-export const HandView: FC<{ hand: Hand, onHitClicked: () => void }> = ({ hand, onHitClicked }) => {
-
-    useEffect(() => {
-        console.log(hand)
-    }, [hand.hand])
+export const HandView: FC<{ hand: Hand, deck: Deck }> = ({ hand, deck }) => {
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
+    
     return <>
-        <button onClick={onHitClicked}>HIT ME!</button>
-        {hand.hand.map((cardid, i) => (<Card cardID={cardid} key={cardid}></Card>))} </>
+        <button onClick={() => {hand.hit(deck); forceUpdate()} }>HIT ME!</button>
+        {hand.hand.map((cardid, i) => (<Card cardID={cardid} key={cardid}></Card>))}
+    </>
 }
