@@ -21,8 +21,8 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
 
-        <HandView hand={hands[0]} onHitClicked={() => { hands[0].hit(deck); setHands((h) => [...h]) }} />
-        <HandView hand={hands[1]} onHitClicked={() => { hands[1].hit(deck); setHands([...hands]) }} />
+        <HandView hand={hands[0]} deck={deck} />
+        <HandView hand={hands[1]} deck={deck} />
       </main>
 
       <footer className={styles.footer}>
