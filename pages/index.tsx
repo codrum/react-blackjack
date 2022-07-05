@@ -3,13 +3,14 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import { Card } from '../lib/components/Card'
-import { HandView, makeDeck } from '../lib/components/HandView'
+import { HandView } from '../lib/components/HandView'
+import { makeDeck } from "../lib/logic/makeDeck"
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
 
   const [deck, setDeck] = useState(makeDeck())
-  const [hands, setHands] = useState(deck.deal(2))
+  const [hands, setHands] = useState(deck.deal(3))
 
   return (
     <div className={styles.container}>
