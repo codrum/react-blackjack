@@ -1,5 +1,4 @@
-import { CardID } from './Card';
-import { Hand } from "./Hand";
+import { Cards } from './Card';
 
 
-export type Deck = { draw: () => CardID; deal: (numberOfHands: number) => Hand[]; };
+export type Deck = Cards;

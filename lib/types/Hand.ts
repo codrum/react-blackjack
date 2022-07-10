@@ -1,7 +1,3 @@
-import { CardID, CardValues, HandValue } from './Card'
-import { Deck } from './Deck'
+import { Cards } from './Card';
 
-export type Hand = {
-	cards: CardID[]
-	draw: (deck: Deck) => void
-}
+export type Hand = Cards;

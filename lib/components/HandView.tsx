@@ -1,36 +1,28 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
-import { Card } from './Card'
-import { Deck } from '../types/Deck'
+import { FC, useMemo } from 'react'
+import { computeValueOfHand } from "../logic/computeValueOfHand"
 import { Hand } from '../types/Hand'
-import { computeValueOfHand } from '../logic/makeHand'
+import { Card } from './Card'
 
-export const HandView: FC<{ hand: Hand; deck: Deck }> = ({ hand, deck }) => {
-	// Force rerender component
-	const [, updateState] = useState()
-	const forceUpdate = useCallback(() => updateState({}), [])
-	// const [handValue, setHandValue] = useState(computeValueOfHand(hand.cards))
-	const handValue = useMemo(
-		() => computeValueOfHand(hand.cards),
-		[hand.cards]
+export const HandView: FC<{ hand: Hand; handleOnHit: () => void }> = ({ hand, handleOnHit }) => {
+	const [lowHandValue, highHandValue] = useMemo(
+		() => computeValueOfHand(hand),
+		[hand]
 	)
 
 	return (
 		<>
 			<button
-				onClick={() => {
-					hand.draw(deck)
-					forceUpdate()
-				}}
+				onClick={() => handleOnHit()}
 			>
 				HIT ME!
 			</button>
 			<div>
 				<p>
-					{handValue[0]},{handValue[1]}
+					{lowHandValue},{highHandValue}
 				</p>
 			</div>
 			<span>
-				{hand.cards.map((cardID) => (
+				{hand.map((cardID) => (
 					<Card cardID={cardID} key={cardID}></Card>
 				))}
 			</span>

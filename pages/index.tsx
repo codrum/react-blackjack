@@ -1,15 +1,27 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-import { useRef, useState } from 'react'
-import { Card } from '../lib/components/Card'
+import { useEffect, useState } from 'react'
 import { HandView } from '../lib/components/HandView'
-import { makeDeck } from '../lib/logic/makeDeck'
+import { deal } from '../lib/logic/deal'
+import { draw } from '../lib/logic/draw'
+import { shuffle } from '../lib/logic/shuffle'
+import { allCards, Cards } from '../lib/types/Card'
+import { Deck } from '../lib/types/Deck'
+import { Hand } from '../lib/types/Hand'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
-	const deck = useRef(makeDeck())
-	const hands = useRef(deck.current.deal(1))
+
+type HomePageProps = {
+	startingDeck: Deck;
+	startingHands: Hand[];
+};
+
+const Home: NextPage<HomePageProps> = ({
+	startingDeck,
+	startingHands
+}) => {
+	const [deck, setDeck] = useState(startingDeck);
+	const [hands, setHands] = useState(startingHands)
 
 	return (
 		<div className={styles.container}>
@@ -23,12 +35,41 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className={styles.main}>
-				{hands.current.map((hand, i) => (
-					<HandView hand={hand} key={i} deck={deck.current} />
+				{hands.map((hand, i) => (
+					<HandView hand={hand} key={i} handleOnHit={() => {
+						const {newDeck, newHand} = draw({
+							deck,
+							hand
+						});
+						setHands((h) => {
+							const h2 = [...h];
+							h2[i] = newHand;
+							return h2;
+						});
+						setDeck(newDeck)
+					}} />
 				))}
 			</main>
 		</div>
 	)
+}
+
+export const getServerSideProps: GetServerSideProps<HomePageProps> = async () => {
+
+	const shuffledDeck = shuffle(Object.keys(allCards) as Cards)
+
+	const {deck: startingDeck, hands: startingHands} = deal({
+		cardsPerHand: 2,
+		deck: shuffledDeck,
+		numberOfHands: 2,
+	})
+
+	return {
+		props: {
+			startingDeck,
+			startingHands,
+		}
+	}
 }
 
 export default Home

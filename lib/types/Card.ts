@@ -13,6 +13,8 @@ export type HandValue = number[]
 
 export type CardID = `${FaceID}${SuitID}`
 
+export type Cards = CardID[];
+
 export const allCards: { readonly [id in CardID]: number[] } = {
 	'2H': [2],
 	'2S': [2],
