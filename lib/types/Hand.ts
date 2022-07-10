@@ -1,5 +1,7 @@
-import { CardID } from './Card';
-import { Deck } from './Deck';
+import { CardID, CardValues, HandValue } from './Card'
+import { Deck } from './Deck'
 
-
-export type Hand = { hand: CardID[]; draw: (deck: Deck) => void; };
+export type Hand = {
+	cards: CardID[]
+	draw: (deck: Deck) => void
+}
