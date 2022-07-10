@@ -1,6 +1,4 @@
-import { CardID } from '../types/Card';
 import { Deck } from '../types/Deck';
-
 
 export const shuffle = (deck: Deck): Deck => {
     let shuffledDeck = [...deck];

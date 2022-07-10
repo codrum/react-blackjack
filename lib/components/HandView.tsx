@@ -17,8 +17,8 @@ export const HandView: FC<{ hand: Hand; handleOnHit: () => void }> = ({ hand, ha
 				HIT ME!
 			</button>
 			<div>
-				<p>
-					{lowHandValue},{highHandValue}
+				<p data-testid="hand-values">
+					{lowHandValue}, {highHandValue}
 				</p>
 			</div>
 			<span>
