@@ -23,7 +23,7 @@ export const HandView: FC<{ hand: Hand; handleOnHit: () => void }> = ({ hand, ha
 			</div>
 			<span>
 				{hand.map((cardID) => (
-					<Card cardID={cardID} key={cardID}></Card>
+					<Card cardID={cardID} key={cardID} />
 				))}
 			</span>
 		</>

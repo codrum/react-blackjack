@@ -12,5 +12,5 @@ describe("HandView", () => {
         const result = computedValuesElement.textContent;
         const expected = "4, 4";
         expect(result).toBe(expected)
-    })    
+    });
 })
