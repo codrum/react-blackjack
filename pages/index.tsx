@@ -1,27 +1,15 @@
-import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import { HandView } from '../lib/components/HandView'
-import { deal } from '../lib/logic/deal'
-import { draw } from '../lib/logic/draw'
-import { shuffle } from '../lib/logic/shuffle'
-import { allCards, Cards } from '../lib/types/Card'
-import { Deck } from '../lib/types/Deck'
-import { Hand } from '../lib/types/Hand'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 
 type HomePageProps = {
-	startingDeck: Deck;
-	startingHands: Hand[];
+
 };
 
-const Home: NextPage<HomePageProps> = ({
-	startingDeck,
-	startingHands
-}) => {
-	const [deck, setDeck] = useState(startingDeck);
-	const [hands, setHands] = useState(startingHands)
+const Home: NextPage<HomePageProps> = () => {
+
 
 	return (
 		<div className={styles.container}>
@@ -35,41 +23,12 @@ const Home: NextPage<HomePageProps> = ({
 			</Head>
 
 			<main className={styles.main}>
-				{hands.map((hand, i) => (
-					<HandView hand={hand} key={i} handleOnHit={() => {
-						const {newDeck, newHand} = draw({
-							deck,
-							hand
-						});
-						setHands((h) => {
-							const h2 = [...h];
-							h2[i] = newHand;
-							return h2;
-						});
-						setDeck(newDeck)
-					}} />
-				))}
+				<Link href='poker'>
+					<button>Play poker</button>
+				</Link>
 			</main>
 		</div>
 	)
-}
-
-export const getServerSideProps: GetServerSideProps<HomePageProps> = async () => {
-
-	const shuffledDeck = shuffle(Object.keys(allCards) as Cards)
-
-	const {deck: startingDeck, hands: startingHands} = deal({
-		cardsPerHand: 2,
-		deck: shuffledDeck,
-		numberOfHands: 2,
-	})
-
-	return {
-		props: {
-			startingDeck,
-			startingHands,
-		}
-	}
 }
 
 export default Home
